@@ -1,5 +1,7 @@
-const BASE_URL =
-  "https://one6-sprint-mission-fe.onrender.com/products";
+const BASE_URL = `${
+  import.meta.env.VITE_API_URL ||
+  "https://one6-sprint-mission-fe.onrender.com"
+}/products`;
 
 export async function getProducts({
   page = 1,
@@ -15,6 +17,7 @@ export async function getProducts({
     orderBy: "recent",
     keyword,
   });
+  
 
   const response = await fetch(`${BASE_URL}?${searchParams}`, {
     signal,

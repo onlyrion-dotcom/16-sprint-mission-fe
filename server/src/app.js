@@ -1,8 +1,9 @@
 import "dotenv/config";
 import cors from "cors";
 import express from "express";
-import mongoose from "mongoose";
+import prisma from "./lib/prisma.js";
 import productsRouter from "./routes/products.js";
+import articlesRouter from "./routes/articles.js";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -11,6 +12,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/products", productsRouter);
+app.use("/products", productsRouter);
+app.use("/articles", articlesRouter);
 
 app.get("/", (req, res) => {
   res.status(200).json({
@@ -40,19 +43,16 @@ app.use((error, req, res, _next) => {
 
 async function startServer() {
   try {
-    if (!process.env.MONGODB_URI) {
-      throw new Error("MONGODB_URI가 설정되지 않았습니다.");
-    }
+    await prisma.$connect();
 
-    await mongoose.connect(process.env.MONGODB_URI);
-
-    console.log("MongoDB connected");
+    console.log("PostgreSQL connected");
 
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
     });
   } catch (error) {
-    console.error("MongoDB connection failed:", error.message);
+    console.error("PostgreSQL connection failed:", error.message);
+    await prisma.$disconnect();
     process.exit(1);
   }
 }

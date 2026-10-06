@@ -17,6 +17,10 @@ function ProductPage() {
   const pageSize = useResponsivePageSize();
 
   useEffect(() => {
+  setPage(1);
+  }, [pageSize]);
+
+  useEffect(() => {
     const timerId = setTimeout(() => {
       setDebouncedKeyword(keyword);
       setPage(1);

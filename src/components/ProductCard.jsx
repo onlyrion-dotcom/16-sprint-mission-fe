@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./ProductCard.css";
+import defaultProductImage from "../assets/images/default-product.png";
 
 function ProductCard({ imageUrl, name, price, favoriteCount }) {
   const [hasImageError, setHasImageError] = useState(false);
@@ -16,7 +17,11 @@ function ProductCard({ imageUrl, name, price, favoriteCount }) {
           onError={() => setHasImageError(true)}
         />
       ) : (
-        <div className="product-card-image-fallback">이미지 없음</div>
+        <img
+              className="product-card-image"
+              src={defaultProductImage}
+              alt={`${name} 기본 이미지`}
+         />
       )}
 
       <h3 className="product-card-name">{name}</h3>
